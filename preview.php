@@ -1,9 +1,6 @@
 <?php
 session_start(); 
 
-
-
-
 $config = require "config.php";
 require "pdo.php";
 $mypdo = new MyPdo($config);
@@ -13,7 +10,7 @@ $filename = md5(rand()).".html";
 		if(file_put_contents($filename, $_POST["content"]))
 		{
 			$content = $_POST["content"];
-			if(isset( $_SESSION["id"] )){
+			if(isset( $_SESSION["id"]) &&$_SESSION["id"]>0 ){
 				$id = $_SESSION['id'];
 				$sql = "update content set content = :content where id = $id;";
 				
@@ -25,6 +22,12 @@ $filename = md5(rand()).".html";
 
 			if($stmt->execute()){
 				echo "http://".$_SERVER['SERVER_NAME'].DIRECTORY_SEPARATOR.$filename;
+
+				if(isset( $_SESSION["id"]) &&$_SESSION["id"]>0 ){
+					session_unset();
+					session_destroy();
+					$_SESSION = array();
+			}
 			}else{
 				echo -1;
 			}

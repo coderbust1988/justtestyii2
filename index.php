@@ -30,10 +30,11 @@
 
 <script>
     var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/twilight");
+    editor.setTheme("ace/theme/eclipse");
     editor.getSession().setMode("ace/mode/html");
     editor.getSession().setTabSize(4);
     
+
     //document.getElementById('editor').style.fontSize='20px';
 
   // editor.commands.addCommand({
@@ -62,8 +63,9 @@ function preview(){
 function fillContent(id){
 
  //   alert(id);
-
 //    editor.setValue(id);
+
+    
     $.ajax({
       method: "POST",
       url: "getcontentById.php",
@@ -71,15 +73,31 @@ function fillContent(id){
     })
       .done(function( msg ) {
         if(msg != -1){
-                editor.setValue(msg);
-                editor.moveCursorToPosition("{pos.row=1,pos.column=1}");
+            //alert(msg);
+            editor.gotoLine(1);
+            editor.setValue(msg,1);
+
+
+                //editor.moveCursorToPosition("{pos.row=1,pos.column=1}");
         }
       });
 }
+
+function moveto(row){
+    
+    //editor.setValue("<html><body>12<br>3<br>3<br>3<br>3<br>4</body></html>");
+
+    editor.gotoLine(1);
+}
+
 </script>
 
 
 <?php
+
+
+
+
 $config = require "config.php";
 require "pdo.php";
 $mypdo = new MyPdo($config);
@@ -92,13 +110,25 @@ $ret = $mypdo->findSQL($sql);
 
 <br><br><br><br>
 
+<!--  <button id="btn3" onclick="moveto(3)">移动光标到某一行</button>
+ <br> -->
   <button id="btn1" onclick="preview()">预览并保存</button>
 
 <br><br><br><br>
 
 <table>
     <th>课程详情id</th>
-<?php if(!empty($ret) && $ret!=-1 && sizeof($ret>0)){
+<?php
+session_start(); 
+ 
+ if(isset($_SESSION["id"])){
+    session_unset();
+session_destroy();
+$_SESSION["id"] = -1;
+ }
+
+
+ if(!empty($ret) && $ret!=-1 && sizeof($ret>0)){
      foreach ($ret as $retTmp) {  ?>
    <tr>
     <td>
@@ -108,7 +138,15 @@ $ret = $mypdo->findSQL($sql);
         </button>
     </td>
     </tr>
-<?php } }?>
+<?php } }else{
+
+  if(isset($_SESSION["id"])){
+    session_unset();
+session_destroy();
+$_SESSION["id"] = -1;
+ }
+
+}?>
 </table>
 
 

@@ -12,8 +12,6 @@ $sql = "SELECT content FROM content where id = :id;";
 
 			if($stmt->execute()){
 				echo $stmt->fetch()["content"];
-
-
 				$_SESSION["id"] = $_POST["id"];
 			}else{
 				echo -1;
