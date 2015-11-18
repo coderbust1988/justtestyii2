@@ -1,7 +1,7 @@
 <?php
 
 class MyPdo extends PDO{
-	
+
 	public static function exception_handler($exception) {
             die('Uncaught exception: '.$exception->getMessage());
     }
@@ -32,10 +32,7 @@ class MyPdo extends PDO{
 			
 		if(!empty($params) && sizeof($params)>0){
 			foreach ($params as $key => $value) {
-				
 				$stmt->bindParam(":{$key}", $params[$key]);
-				
-				// NG ....坑，$stmt->bindParam(":{$key}", $value);
 			}
 		}
 		
@@ -58,12 +55,12 @@ class MyPdo extends PDO{
 		if($stmt->execute()){
 			$retObjs = $stmt->fetchAll();
 			if(empty($retObjs)){
-				echo 'sql return null ..  '.$sql;
+				return -1;
 			}else{
 				return $retObjs;
 			}
 		}else{
-			echo 'execute sql error..'.$sql;
+			return -1;
 		}
 
 	}
@@ -71,9 +68,9 @@ class MyPdo extends PDO{
 	public function executeSQL($sql){
 		$stmt = $this->prepare($sql);
 		if($stmt->execute()){
-			return true;
+			return 1;
 		}else{
-			echo 'execute sql error..'.$sql;
+			return -1;
 		}
 	}
 }
