@@ -75,7 +75,7 @@ function fillContent(id){
         if(msg != -1){
             //alert(msg);
             editor.gotoLine(1);
-            editor.setValue(msg,1);
+            editor.setValue(msg,-1);
 
 
                 //editor.moveCursorToPosition("{pos.row=1,pos.column=1}");
@@ -85,9 +85,15 @@ function fillContent(id){
 
 function moveto(row){
     
-    //editor.setValue("<html><body>12<br>3<br>3<br>3<br>3<br>4</body></html>");
 
-    editor.gotoLine(1);
+    editor.gotoLine(row);
+}
+
+function setValueBigData(){
+    var data1 = '<?php echo str_repeat("888888888888888888888888888888888888888888888888888888888888888888888888888888888888", 5000);?>';
+    editor.setValue(data1,-1);
+    var data2 = '<?php echo str_repeat("888888888888888888888888888888888888888888888888888888888888888888888888888888888888", 5000);?>';
+    editor.setValue( editor.getValue()+data2,1);
 }
 
 </script>
@@ -110,8 +116,13 @@ $ret = $mypdo->findSQL($sql);
 
 <br><br><br><br>
 
-<!--  <button id="btn3" onclick="moveto(3)">移动光标到某一行</button>
+<!--  <button id="btn3" onclick="moveto(30)">移动光标到某一行</button>
  <br> -->
+
+
+  <button id="btn3" onclick="setValueBigData()">设置大数据</button>
+ <br>
+
   <button id="btn1" onclick="preview()">预览并保存</button>
 
 <br><br><br><br>
@@ -119,9 +130,10 @@ $ret = $mypdo->findSQL($sql);
 <table>
     <th>课程详情id</th>
 <?php
-session_start(); 
+
  
  if(isset($_SESSION["id"])){
+    session_start(); 
     session_unset();
 session_destroy();
 $_SESSION["id"] = -1;
@@ -138,15 +150,9 @@ $_SESSION["id"] = -1;
         </button>
     </td>
     </tr>
-<?php } }else{
+<?php } }
 
-  if(isset($_SESSION["id"])){
-    session_unset();
-session_destroy();
-$_SESSION["id"] = -1;
- }
-
-}?>
+?>
 </table>
 
 

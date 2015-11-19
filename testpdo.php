@@ -13,18 +13,13 @@ $mypdo = new MyPdo($config);
 
 
 
+$sql = "SELECT content FROM content where id = :id;";
+			$stmt = $mypdo->prepare($sql);
+			$idInt = 9;
+			$stmt->bindParam(":id", $idInt);
 
-
-
-
-
-$content = str_repeat("absamnbmfn".rand(1,100), 100);
-			$sql = "insert into content (content) values ('".$content."');";
-
-
-var_export($sql);
-			if($mypdo->executeSQL($sql)){
-				echo "http://".$_SERVER['SERVER_NAME'];
+			if($stmt->execute()){
+				echo $stmt->fetch()["content"];
 			}else{
 				echo -1;
 			}
