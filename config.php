@@ -8,7 +8,7 @@ return array(
 	"db_username"=>"root",
 	"db_password"=>"",
 	
-
+	"html_loction"=>"cache",
 
 
 

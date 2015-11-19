@@ -6,7 +6,7 @@ require "pdo.php";
 $mypdo = new MyPdo($config);
 
 
-$filename = md5(rand()).".html";
+$filename = $config["html_loction"].DIRECTORY_SEPARATOR.md5(rand()).".html";
 		if(file_put_contents($filename, $_POST["content"]))
 		{
 			$content = $_POST["content"];
