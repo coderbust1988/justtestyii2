@@ -103,7 +103,6 @@ function setValueBigData(){
 
 
 
-
 $config = require "config.php";
 require "pdo.php";
 $mypdo = new MyPdo($config);
