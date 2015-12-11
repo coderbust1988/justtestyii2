@@ -3,9 +3,16 @@ require_once '../vendor/autoload.php';
 
 use Qiniu\Auth;
 
-  $bucket = 'yanggangcc';
-  $accessKey = 'FMIQBKeyeSviTXMHf5CoTr_x5X2ut7rIttwBM5ub';
-  $secretKey = 'qOf-2WTAg6O6lIy2bMuYnVCFlRdXZk_4wKT_PtXA';
+  // $bucket = '';
+  // $accessKey = '';
+  // $secretKey = '';
+	
+  $bucket = '';
+  $accessKey = '';
+  $secretKey = '';
+
+  
+
   $auth = new Auth($accessKey, $secretKey);
 
   $upToken = $auth->uploadToken($bucket);
