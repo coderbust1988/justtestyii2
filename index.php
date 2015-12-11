@@ -397,6 +397,8 @@
 // 		$this->d = $inputStr;
 
 // 		$this->aaa();
+
+// 		var_dump(__CLASS__);
 // 	}
 
 
@@ -468,14 +470,16 @@
 
 
 
-$a =  array("a"=>1,"b"=>2,"c"=>3);
-$b = serialize($a);
+// $a =  array("a"=>1,"b"=>2,"c"=>3);
+// $b = serialize($a);
 
-var_dump($b);
+// var_dump($b);
 
-$c = unserialize($b);
+// $c = unserialize($b);
 
-var_dump($c);
+// var_dump($c);
+
+
 
 
 
