@@ -1,5 +1,7 @@
 <?php 
 
+set_time_limit(0);
+
 // $string = "true";
 // if(strncasecmp($string,"trufeau",5)){
 // 	print "True";
@@ -479,6 +481,177 @@
 
 // var_dump($c);
 
+
+// $time = microtime(TRUE);
+// $mem = memory_get_usage();
+
+
+// $a = str_repeat("aaaaa", 250000);
+
+
+
+
+// print_r(array(
+//   'memory' => (memory_get_usage() - $mem) / (1024 * 1024),
+//   'seconds' => microtime(TRUE) - $time
+// ));
+
+
+//phpinfo();
+
+//var_export(gd_info());
+
+
+function curl($url, $method = 'GET', $params = array(), $header = array()) {
+	$headers['CLIENT-IP'] = '202.103.229.40';    
+	$headers['X-FORWARDED-FOR'] = '202.103.229.40';   
+	$headerArr = array();    
+	foreach( $headers as $n => $v ) {    
+	    $headerArr[] = $n .':' . $v;     
+	}  
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    if(strpos($url,'https') !== false){
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 对认证证书来源的检查
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); // 从证书中检查SSL加密算法是否存在
+    }
+    curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method)); //设置请求方式
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);// 获取的信息以文件流的形式返回
+    if(!empty($params)){
+        curl_setopt($ch, CURLOPT_POST, 1); // 发送一个常规的Post请求
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $params); // Post提交的数据包
+    }
+    // if(!empty($header)){
+    //     $headers = array();
+    //     foreach($header as $k => $v){$headers[] = $k.': '.$v;}
+    //     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    // }
+
+    curl_setopt ($ch, CURLOPT_HTTPHEADER , $headerArr );  //构造IP  
+  
+	curl_setopt ($ch, CURLOPT_REFERER, "http://www.163.com/ ");   //构造来路  
+
+    $result['content'] = curl_exec($ch);
+    if(curl_errno($ch)) return false;
+    $result['info'] = curl_getinfo($ch);
+    curl_close($ch);
+    return $result;
+}
+
+
+// $params = array();
+// $params["ip"] = "180.97.33.107";
+// $ret = curl("http://ip.taobao.com/service/getIpInfo2.php","POST",$params);
+
+// echo json_encode($ret);
+
+//echo json_decode($ret);
+
+// $params = array();
+
+//  $params["username"] = "uuuuu";
+//  $params["password"] = "uuuuuu";
+
+// //$params["user_login"] = "uuuuu";
+
+
+// $i = 0;
+// while($i < 100000){
+// 	$begin = time();
+//     $ret = curl("http://www.chanpin100.com/wp-admin/admin-ajax.php","POST",$params);
+// 	//$ret = curl("http://www.chanpin100.com/wp-login.php?action=lostpassword","POST",$params);
+// 	var_dump("the :".$i." time..");
+// 	var_dump($ret);
+// 	$i++;
+// }
+
+
+// http://student.meihaoxueyuan.com/api/users/captcha?id=1450247168039378
+
+
+//Request URL:http://www.chanpin100.com/wp-content/themes/xiu/modules/comment.php
+//comment:123
+//comment_post_ID:3616
+//comment_parent:0
+//comment_mail_notify:comment_mail_notify
+
+
+// http://www.chanpin100.com/wp-login.php
+// username
+// password
+
+
+
+
+// function ccc(){
+//     var_dump(__FUNCTION__);
+// }
+
+// function a(){
+//     var_dump(__FUNCTION__);
+//     ccc();
+// }
+
+
+// a();
+
+
+// function t1(){
+//     $i = 0;
+//     $sum = 0;
+//     while($i < 100000000){
+//         $sum = $sum +$i;
+//         $i++;
+//     }
+//     return $sum;
+// }
+
+// $begin = time();
+
+// $sum = t1();
+
+// $end = time();
+
+// var_dump($sum);
+// var_dump("used time:".($end-$begin));
+
+// var_dump(time());
+// var_dump($_SERVER['REQUEST_TIME']);
+// sleep(5);
+
+// echo "<br>";
+
+// var_dump(time());
+// var_dump($_SERVER['REQUEST_TIME']);
+
+
+// $results =[1,2];
+
+//  if(!empty($results)){
+//      echo 3;          
+//   }else{
+//     echo 4;
+//   }
+
+
+
+// var_dump( date("Ymd"));
+
+
+
+// $begin = $_SERVER["REQUEST_TIME"];
+
+// $a = array();
+// for($i = 0; $i <1000000; $i++){
+//     $a[] = $i >> 3;
+// }
+// $b = serialize($a);
+
+
+// $c = unserialize($b);
+
+// var_dump(time()-$begin);
 
 
 
