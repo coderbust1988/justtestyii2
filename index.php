@@ -654,6 +654,24 @@ function curl($url, $method = 'GET', $params = array(), $header = array()) {
 // var_dump(time()-$begin);
 
 
+// for ($i=0; $i < 5 ; $i++) { 
+    
+//     var_dump($tmp);
+//     $tmp = md5($tmp);
+// }
+
+
+
+
+$str = "The string ends in escape: ";
+$str .= chr(21); /* 在 $str 后边增加换码符 */
+
+/* 通常这样更有用 */
+
+$str = sprintf("The string ends in escape: %c", 27);
+
+
+var_dump($str);
 
 
 ?>

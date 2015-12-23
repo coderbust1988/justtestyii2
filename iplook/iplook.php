@@ -1,19 +1,7 @@
 <?php
 
-/*
-    全球 IPv4 地址归属地数据库(17MON.CN 版)
-    高春辉(pAUL gAO) <gaochunhui@gmail.com>
-    Build 20141009 版权所有 17MON.CN
-    (C) 2006 - 2014 保留所有权利
-    请注意及时更新 IP 数据库版本
-    数据问题请加 QQ 群: 346280296
-    Code for PHP 5.3+ only
-*/
-
 class IP
 {
-    private static $ip     = NULL;
-
     private static $fp     = NULL;
     private static $offset = NULL;
     private static $index  = NULL;
@@ -72,15 +60,34 @@ class IP
 
         self::$cached[$nip] = explode("\t", fread(self::$fp, $index_length['len']));
 
-        return self::$cached[$nip];
+        if(sizeof(self::$cached[$nip]) == 4 && (self::$cached[$nip][0] != "CLOUDFLARE" )){
+            return self::$cached[$nip];
+        }else{
+            return self::$cached[$nip];
+            
+            // $params = array();
+            // $params["ip"] = $ip;
+            // $ret = self::curl("http://ip.taobao.com/service/getIpInfo2.php","POST",$params);
+            
+            // $ret = json_decode($ret);
+            
+            // if($ret->code ==0 ){
+            //     $tmpArray = array();
+            //     $tmpArray[] = $ret->data->country;
+            //     $tmpArray[] = $ret->data->region;
+            //     $tmpArray[] = $ret->data->city;
+            //     self::$cached[$nip] = $tmpArray;
+            //     return self::$cached[$nip];
+            // }else{
+            //     return 0;
+            // }
+        }
     }
 
     private static function init()
     {
         if (self::$fp === NULL)
         {
-            self::$ip = new self();
-
             self::$fp = fopen(__DIR__ . '/17monipdb.dat', 'rb');
             if (self::$fp === FALSE)
             {
@@ -99,27 +106,97 @@ class IP
 
     public function __destruct()
     {
-        var_dump(self::$fp);
         if (self::$fp !== NULL && is_resource(self::$fp))
         {
             fclose(self::$fp);
         }
     }
+
+
+    public static function curl($url, $method = 'GET', $params = array(), $header = array()) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        if(strpos($url,'https') !== false){
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // 对认证证书来源的检查
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2); // 从证书中检查SSL加密算法是否存在
+        }
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, strtoupper($method)); //设置请求方式
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);// 获取的信息以文件流的形式返回
+        if(!empty($params)){
+            curl_setopt($ch, CURLOPT_POST, 1); // 发送一个常规的Post请求
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $params); // Post提交的数据包
+        }
+        
+        if(!empty($header)){
+            $headers = array();
+            foreach($header as $k => $v){$headers[] = $k.': '.$v;}
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        }
+              
+        curl_setopt ($ch, CURLOPT_REFERER, "http://www.163.com/ ");   //构造来路  
+        $result = curl_exec($ch);
+        if(curl_errno($ch)){
+            return false;
+        }
+        curl_close($ch);
+        return $result;
+    }
 }
 
 
 
-var_dump(memory_get_usage());
+// echo $_SERVER["REMOTE_ADDR"];
+// echo "<br><br>";
+
+function getIP(){
+global $ip;
+if (getenv("HTTP_CLIENT_IP"))
+$ip = getenv("HTTP_CLIENT_IP");
+else if(getenv("HTTP_X_FORWARDED_FOR"))
+$ip = getenv("HTTP_X_FORWARDED_FOR");
+else if(getenv("REMOTE_ADDR"))
+$ip = getenv("REMOTE_ADDR");
+else $ip = "Unknow";
+return $ip;
+}
 
 $ipclass = new IP();
 
+var_dump("117.176.128.148");
 var_dump($ipclass->find("117.176.128.148"));
 
-// var_dump($ipclass->find("180.97.33.107"));
+var_dump("180.97.33.107");
+var_dump($ipclass->find("180.97.33.107"));
 
-// var_dump($ipclass->find("218.75.110.152"));
+var_dump("218.75.110.152");
+var_dump($ipclass->find("218.75.110.152"));
+
+var_dump("104.28.14.119");
+var_dump($ipclass->find("104.28.14.119")); // http://ip.taobao.com/ipSearch.php?ipAddr=104.28.14.119
+
+var_dump("192.30.252.128");
+var_dump($ipclass->find("192.30.252.128")); 
+
+var_dump("182.140.236.27");
+var_dump($ipclass->find("182.140.236.27")); 
+
+var_dump("183.79.227.90");
+var_dump($ipclass->find("183.79.227.90")); 
+
+var_dump("104.16.35.249");
+var_dump($ipclass->find("104.16.35.249")); 
+
+var_dump("101.200.96.31");
+var_dump($ipclass->find("101.200.96.31")); 
+
+var_dump("61.153.202.157");
+var_dump($ipclass->find("61.153.202.157")); 
 
 
-var_dump(memory_get_usage());
+
+
+// http://www.ipip.net/download.html
+
+
 
 ?>
